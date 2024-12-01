@@ -1,0 +1,2 @@
+curl "https://api.spotify.com/v1/artists/3Nrfpe0tUJi4K4DXYWgMUX?si=IwrM5GxvSAiZ7fpM-WSwkw" \
+     -H "Authorization: Bearer  BQCadpRGFcCRc317WwU3aKIhulwJ5Y2VoARWOhpIv64n_1Hmx3YJO40AsR0HsipO3xIAWYgyua8R5EO43BY43OyhLRSxl4YNgnIsdUo4ClNYq4sU7k4"
