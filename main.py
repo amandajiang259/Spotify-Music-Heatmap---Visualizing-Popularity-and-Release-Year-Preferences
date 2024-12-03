@@ -4,6 +4,19 @@ from minHeap import MinHeap
 from hashmap import HashMap
 from SpotifyAPI import SpotifyAPI
 
+
+def add_track_to_heatmap_hash(heatmap_data, year, popularity):
+    """Add a track's data to the heatmap."""
+    # Popularity buckets in increments of 10
+    popularity_buckets = {i: 0 for i in range(0, 101, 10)}
+    bucket = (popularity // 10) * 10  # Find the bucket (0-9 -> 0, 10-19 -> 10, etc.)
+
+    year_data = heatmap_data.get(year)
+    if year_data is None:
+        year_data = popularity_buckets.copy()
+    year_data[bucket] += 1
+    heatmap_data.insert(year, year_data)
+
 def generate_heatmap(frequency_map, playlist_name, generation_time, structure_choice):
     x_values = []
     y_values = []
@@ -67,7 +80,7 @@ def main():
     elif structure_choice == "hashmap":
         structure = HashMap()
         for release_date, artist_popularity in data:
-            structure.insert(release_date, artist_popularity)
+            add_track_to_heatmap_hash(structure, release_date, artist_popularity)
 
     print("Generating heatmap...")
     frequency_map = structure.get_frequency()
