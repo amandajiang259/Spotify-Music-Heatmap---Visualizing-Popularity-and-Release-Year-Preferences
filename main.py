@@ -1,3 +1,4 @@
+# Import relevant libraries
 import time
 import numpy as np
 import matplotlib.pyplot as plt
@@ -5,7 +6,7 @@ from minHeap import MinHeap
 from hashmap import HashMap
 from SpotifyAPI import SpotifyAPI
 
-# Class used to create a heatmap based on popularity and date of release, and display it.
+# Function used to create a heatmap based on popularity and date of release, and display it.
 def generate_heatmap(frequency_map, playlist_name, generation_time, structure_choice):
     print(frequency_map)
 
@@ -52,44 +53,52 @@ def generate_heatmap(frequency_map, playlist_name, generation_time, structure_ch
     # Show plot
     plt.show()
 
+# Main function used to handle user input and function calls
 def main():
     CLIENT_ID = "326fc1e53d714e2682aaaa5bf3b22b87"
     CLIENT_SECRET = "b551096e20984b9b89575cbd34f06e40"
-    playlist_id = input("Enter the Spotify playlist ID: ").strip()
-    if not playlist_id:
+    playlist_id = input("Enter the Spotify playlist ID: ").strip() # Prompts the user to input the ID of the playlist
+    if not playlist_id: # If the user inputs an invalid (empty) playlist ID, then print an error
         print("Error: Playlist ID cannot be empty.")
         return
 
+    # Prompts the user to enter the desired datastructure to complete the operation
     structure_choice = input("Choose the data structure (heap or hashmap): ").strip().lower()
+
+    # If the user has not chosen a valid datastructure, print an error message
     if structure_choice not in {"heap", "hashmap"}:
         print("Error: Invalid choice. Please choose 'heap' or 'hashmap'.")
         return
 
     spotify = SpotifyAPI(CLIENT_ID, CLIENT_SECRET)
-
+    # Try to gather data from Spotify using the API
     try:
         print("Fetching data from Spotify...")
         start_time = time.time()
 
         data = spotify.parse_playlist_data(playlist_id)
         playlist_name = spotify.get_playlist_name(playlist_id)
+    # If the data cannot be gathered, print the error message and return
     except Exception as e:
         print(f"Error: {e}")
         return
 
+    # If the user has entered "heap" as their choice of datastructure, then set the structure to a MinHeap() object and push the release date and popularity values
     if structure_choice == "heap":
         structure = MinHeap()
         for release_date, artist_popularity in data:
             structure.push(release_date, artist_popularity)
+    # Otherwise if the user has entered "hashmap" as their choice of datastructure, set the structure to HashMap() object and push the release date and popularity values
     elif structure_choice == "hashmap":
         structure = HashMap()
         for release_date, artist_popularity in data:
             structure.insert(release_date, artist_popularity)
 
+    # Print a message to the console informing the user that the heatmap is being generated
     print("Generating heatmap...")
     frequency_map = structure.get_frequency()
-    generation_time = time.time() - start_time
-    generate_heatmap(frequency_map, playlist_name, generation_time, structure_choice)
+    generation_time = time.time() - start_time # Calculate the time it took to generate
+    generate_heatmap(frequency_map, playlist_name, generation_time, structure_choice) # Create and display the heatmap for the user
 
 if __name__ == "__main__":
     main()
