@@ -5,6 +5,7 @@ from minHeap import MinHeap
 from hashmap import HashMap
 from SpotifyAPI import SpotifyAPI
 
+# Class used to create a heatmap based on popularity and date of release, and display it.
 def generate_heatmap(frequency_map, playlist_name, generation_time, structure_choice):
     print(frequency_map)
 
