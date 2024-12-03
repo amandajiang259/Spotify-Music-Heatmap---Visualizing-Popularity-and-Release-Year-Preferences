@@ -1,56 +1,59 @@
-import matplotlib.pyplot as plt
 import time
+import numpy as np
+import matplotlib.pyplot as plt
 from minHeap import MinHeap
 from hashmap import HashMap
 from SpotifyAPI import SpotifyAPI
 
-
-def add_track_to_heatmap_hash(heatmap_data, year, popularity):
-    """Add a track's data to the heatmap."""
-    # Popularity buckets in increments of 10
-    popularity_buckets = {i: 0 for i in range(0, 101, 10)}
-    bucket = (popularity // 10) * 10  # Find the bucket (0-9 -> 0, 10-19 -> 10, etc.)
-
-    year_data = heatmap_data.get(year)
-    if year_data is None:
-        year_data = popularity_buckets.copy()
-    year_data[bucket] += 1
-    heatmap_data.insert(year, year_data)
-
 def generate_heatmap(frequency_map, playlist_name, generation_time, structure_choice):
-    x_values = []
-    y_values = []
-    colors = []
+    print(frequency_map)
 
-    total_count = sum(frequency_map.values())
-    for (x, y), count in frequency_map.items():
-        x_values.append(int(x.split("-")[0]))  # Convert year to integer
-        y_values.append(y)
-        colors.append(count / total_count)  # Percentage
+    # Extract years and popularity values from the frequency map
+    x_values = sorted({int(key.split("-")[0]) for key in frequency_map.keys()})  # Extract years
+    y_values = sorted({int(key.split("-")[1]) for key in frequency_map.keys()})  # Extract unique popularity values from the map
 
+    # Create a 2D grid (heatmap matrix)
+    heatmap = np.zeros((len(y_values), len(x_values)))  # Rows = popularity, columns = years
+
+    # Fill the heatmap with frequencies
+    for key, count in frequency_map.items():
+        year = int(key.split("-")[0])  # Extract year from the key
+        popularity = int(key.split("-")[1])  # Extract popularity from the key
+        x_idx = x_values.index(year)  # Column index (year)
+        y_idx = y_values.index(popularity)  # Row index (popularity)
+        heatmap[y_idx, x_idx] = count  # Assign count to the grid cell
+
+    # Normalize the heatmap for coloring (percentage of total)
+    total_count = heatmap.sum()
+    heatmap_normalized = heatmap / total_count
+
+    # Create the heatmap
     fig, ax = plt.subplots(figsize=(10, 6))
-    scatter = ax.scatter(x_values, y_values, c=colors, cmap="viridis", s=100)
+    img = ax.imshow(heatmap_normalized, cmap="viridis", aspect="auto",
+                    extent=[min(x_values), max(x_values), min(y_values), max(y_values)],
+                    origin='lower')
 
+    # Add titles and labels
     ax.set_title(f"Heatmap of Songs by Release Date and Artist Popularity\n"
                  f"Playlist: {playlist_name} | Structure: {structure_choice.capitalize()}",
                  fontsize=14)
-
-    # Add color bar
-    plt.colorbar(scatter, label="Percentage of Songs (%)")
     ax.set_xlabel("Year (Release Date)")
     ax.set_ylabel("Artist Popularity")
-    ax.grid(True)
+    ax.grid(False)  # Disable the grid for a cleaner heatmap look
 
+    # Add color bar for intensity
+    cbar = plt.colorbar(img, label="Percentage of Songs (%)")
+
+    # Add text annotation for generation time
     plt.figtext(0.85, 0.95, f"Generation Time: {generation_time:.2f} sec", ha='center', fontsize=12,
                 bbox=dict(facecolor='white', alpha=0.7))
 
     # Show plot
     plt.show()
 
-
 def main():
-    CLIENT_ID = "35aeb022d82e4e4eab00a6d61fc4bd0c"
-    CLIENT_SECRET = "c8a031c755134ec8ac17f4f969249bcb"
+    CLIENT_ID = "326fc1e53d714e2682aaaa5bf3b22b87"
+    CLIENT_SECRET = "b551096e20984b9b89575cbd34f06e40"
     playlist_id = input("Enter the Spotify playlist ID: ").strip()
     if not playlist_id:
         print("Error: Playlist ID cannot be empty.")
@@ -80,14 +83,12 @@ def main():
     elif structure_choice == "hashmap":
         structure = HashMap()
         for release_date, artist_popularity in data:
-            add_track_to_heatmap_hash(structure, release_date, artist_popularity)
+            structure.insert(release_date, artist_popularity)
 
     print("Generating heatmap...")
     frequency_map = structure.get_frequency()
-
     generation_time = time.time() - start_time
     generate_heatmap(frequency_map, playlist_name, generation_time, structure_choice)
-
 
 if __name__ == "__main__":
     main()

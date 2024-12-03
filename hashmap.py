@@ -1,41 +1,40 @@
-# from collections import defaultdict
-#
-# class HashMap:
-#     def __init__(self):
-#         self.map = defaultdict(int)
-#
-#     def insert(self, key, value):
-#         self.map[(key, value)] += 1
-#
-#     def get_frequency(self):
-#         return self.map
+from urllib3.util.util import to_str
+
 
 class HashMap:
     def __init__(self, size=100):
         self.size = size
         self.map = [None] * size
+        self.frequency_map = {}
 
     def _hash(self, key):
-        """Compute the index for a given key."""
+        """Compute the index for a given key using Python's hash function."""
         return hash(key) % self.size
 
     def insert(self, key, value):
-        """Insert or update a key-value pair."""
-        index = self._hash(key)
-        if self.map[index] is None:
-            self.map[index] = [(key, value)]
-        else:
-            for pair in self.map[index]:
-                if pair[0] == key:
-                    pair[1].update(value)  # Merge values if key exists
-                    return
-            self.map[index].append((key, value))  # Handle collision
+        """
+        Insert or update a key-value pair into the hash map.
+        Tracks frequency of (year-popularity) pairs for heatmap.
+        """
 
-    def get(self, key):
-        """Retrieve value by key."""
-        index = self._hash(key)
-        if self.map[index] is not None:
-            for pair in self.map[index]:
-                if pair[0] == key:
-                    return pair[1]
-        return None
+        formatted_key = to_str(key.split("-")[0]) + "-" + str(value)
+
+        # Insert the key-value pair into the hash map
+        index = self._hash(formatted_key)
+        if self.map[index] is None:
+            self.map[index] = [(formatted_key, value)]  # Store popularity as value
+        else:
+            for i, (existing_key, existing_value) in enumerate(self.map[index]):
+                if existing_key == formatted_key:
+                    break
+            else:
+                self.map[index].append((formatted_key, value))  # Add new pair if not found
+
+        # Update frequency map (tracking popularity by year)
+        self.frequency_map[formatted_key] = self.frequency_map.get(formatted_key, 0) + 1
+
+    def get_frequency(self):
+        return self.frequency_map
+
+    def __str__(self):
+        return str(self.map)
