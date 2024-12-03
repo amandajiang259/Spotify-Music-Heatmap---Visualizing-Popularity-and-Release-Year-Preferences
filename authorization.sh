@@ -3,8 +3,14 @@
 # Variables
 CLIENT_ID="dc0ce8799b2945a0bab45c6881104944"
 CLIENT_SECRET="bebc2fd1df064f10be9382c921000dae"
-PLAYLIST_ID="5Nub55gIGdMURRU0c3p2Um"
-OUTPUT_FILE="release_date_and_popularity.txt"
+PLAYLIST_ID=$1  # Get playlist ID from the first argument
+OUTPUT_FILE="tempo_and_keys.txt"
+
+# Validate the playlist ID
+if [ -z "$PLAYLIST_ID" ]; then
+    echo "Error: Playlist ID is required."
+    exit 1
+fi
 
 # Step 1: Get the access token
 TOKEN_RESPONSE=$(curl -k -s -X POST "https://accounts.spotify.com/api/token" \
