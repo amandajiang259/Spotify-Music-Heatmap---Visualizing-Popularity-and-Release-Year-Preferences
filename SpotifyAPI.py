@@ -13,7 +13,7 @@ class SpotifyAPI:
         self.window_size = 30  # Rolling window in seconds
 
     def get_access_token(self):
-        """Authenticate with Spotify and get an access token."""
+        # Authenticate with Spotify and get an access token.
         url = "https://accounts.spotify.com/api/token"
         data = {"grant_type": "client_credentials"}
         response = requests.post(url, data=data, auth=(self.client_id, self.client_secret))
@@ -22,14 +22,14 @@ class SpotifyAPI:
         return response.json()["access_token"]
 
     def refresh_token_if_needed(self):
-        """Refresh the access token if it's expired."""
+        # Refresh the access token if it's expired.
         if time.time() >= self.token_expiration_time:
             print("Access token expired. Refreshing token...")
             self.token = self.get_access_token()
             self.token_expiration_time = time.time() + 3600  # Reset the expiration time
 
     def wait_if_rate_limited(self):
-        """Wait if the rate limit is close to being exceeded."""
+        # Wait if the rate limit is close to being exceeded.
         current_time = time.time()
 
         # Remove timestamps outside the rolling window
@@ -43,7 +43,7 @@ class SpotifyAPI:
             time.sleep(wait_time)
 
     def make_api_call(self, url, headers):
-        """Make a single API call, respecting rate limits and refreshing the token if needed."""
+        # Make a single API call, respecting rate limits and refreshing the token if needed.
         self.refresh_token_if_needed()  # Ensure the token is valid
         headers["Authorization"] = f"Bearer {self.token}"  # Update header with the valid token
 
@@ -60,7 +60,7 @@ class SpotifyAPI:
         return response
 
     def get_playlist_tracks(self, playlist_id):
-        """Retrieve all tracks from a playlist, handling pagination."""
+        # Retrieve all tracks from a playlist, handling pagination.
         url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks?limit=100"
         headers = {"Authorization": f"Bearer {self.token}"}
 
@@ -80,7 +80,7 @@ class SpotifyAPI:
         return all_tracks
 
     def get_playlist_name(self, playlist_id):
-        """Fetch the playlist name using the Spotify API."""
+        # Fetch the playlist name using the Spotify API.
         url = f"https://api.spotify.com/v1/playlists/{playlist_id}"
         headers = {"Authorization": f"Bearer {self.token}"}
         response = requests.get(url, headers=headers)
@@ -93,7 +93,7 @@ class SpotifyAPI:
             return "Unknown Playlist"
 
     def get_artist_popularity(self, artist_id):
-        """Fetch artist popularity."""
+        # Fetch artist popularity.
         url = f"https://api.spotify.com/v1/artists/{artist_id}"
         headers = {"Authorization": f"Bearer {self.token}"}
         response = self.make_api_call(url, headers)
@@ -105,7 +105,7 @@ class SpotifyAPI:
             return None
 
     def parse_playlist_data(self, playlist_id):
-        """Extract and process release date and artist popularity."""
+        # Extract and process release date and artist popularity.
         tracks = self.get_playlist_tracks(playlist_id)
         data = []
         count = 0
