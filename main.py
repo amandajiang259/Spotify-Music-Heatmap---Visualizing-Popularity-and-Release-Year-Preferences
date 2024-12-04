@@ -1,6 +1,8 @@
 # Import relevant libraries
 import time
 import numpy as np
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from minHeap import MinHeap
 from hashmap import HashMap

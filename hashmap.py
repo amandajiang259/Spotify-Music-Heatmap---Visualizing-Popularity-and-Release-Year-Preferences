@@ -1,6 +1,5 @@
 from urllib3.util.util import to_str
 
-
 class HashMap:
     def __init__(self, size=100):
         self.size = size
@@ -8,8 +7,12 @@ class HashMap:
         self.frequency_map = {}
 
     def _hash(self, key):
-        """Compute the index for a given key using Python's hash function."""
-        return hash(key) % self.size
+        #Compute the index for a given key using a hash function for strings
+        p = 31 # Prime number
+        hash_value = 0
+        for i, char in enumerate(key):
+            hash_value = (hash_value + (ord(char) * (p ** i))) % (self.size)
+        return hash_value
 
     def insert(self, key, value):
         """
