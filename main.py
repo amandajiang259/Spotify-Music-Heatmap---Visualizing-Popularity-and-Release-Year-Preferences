@@ -47,7 +47,7 @@ def generate_heatmap(frequency_map, playlist_name, generation_time, structure_ch
     cbar = plt.colorbar(img, label="Percentage of Songs (%)")
 
     # Add text annotation for generation time
-    plt.figtext(0.85, 0.95, f"Generation Time: {generation_time:.2f} sec", ha='center', fontsize=12,
+    plt.figtext(0.85, 0.95, f"Generation Time: {generation_time:.8f} sec", ha='center', fontsize=10,
                 bbox=dict(facecolor='white', alpha=0.7))
 
     # Show plot
@@ -82,14 +82,15 @@ def main():
         print(f"Error: {e}")
         return
 
-    start_time = time.time()
     # If the user has entered "heap" as their choice of datastructure, then set the structure to a MinHeap() object and push the release date and popularity values
     if structure_choice == "heap":
+        start_time = time.perf_counter()
         structure = MinHeap()
         for release_date, artist_popularity in data:
             structure.push(release_date, artist_popularity)
     # Otherwise if the user has entered "hashmap" as their choice of datastructure, set the structure to HashMap() object and push the release date and popularity values
     elif structure_choice == "hashmap":
+        start_time = time.perf_counter()
         structure = HashMap()
         for release_date, artist_popularity in data:
             structure.insert(release_date, artist_popularity)
@@ -97,7 +98,7 @@ def main():
     # Print a message to the console informing the user that the heatmap is being generated
     print("Generating heatmap...")
     frequency_map = structure.get_frequency()
-    generation_time = time.time() - start_time # Calculate the time it took to generate
+    generation_time = time.perf_counter() - start_time # Calculate the time it took to generate
     generate_heatmap(frequency_map, playlist_name, generation_time, structure_choice) # Create and display the heatmap for the user
 
 if __name__ == "__main__":
