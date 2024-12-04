@@ -74,7 +74,6 @@ def main():
     # Try to gather data from Spotify using the API
     try:
         print("Fetching data from Spotify...")
-        start_time = time.time()
 
         data = spotify.parse_playlist_data(playlist_id)
         playlist_name = spotify.get_playlist_name(playlist_id)
@@ -83,6 +82,7 @@ def main():
         print(f"Error: {e}")
         return
 
+    start_time = time.time()
     # If the user has entered "heap" as their choice of datastructure, then set the structure to a MinHeap() object and push the release date and popularity values
     if structure_choice == "heap":
         structure = MinHeap()
