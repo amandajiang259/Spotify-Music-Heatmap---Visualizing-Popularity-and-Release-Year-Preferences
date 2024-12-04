@@ -1,6 +1,9 @@
 from urllib3.util.util import to_str
 
+# Class for hashmap data structure
 class HashMap:
+
+    # Initializes the size to the parameter value and initalizes the map, and the frequency map to be empty
     def __init__(self, size=100):
         self.size = size
         self.map = [None] * size
@@ -36,6 +39,7 @@ class HashMap:
         # Update frequency map (tracking popularity by year)
         self.frequency_map[formatted_key] = self.frequency_map.get(formatted_key, 0) + 1
 
+    # Getter function used to return the frequency_map of a HashMap object
     def get_frequency(self):
         return self.frequency_map
 
