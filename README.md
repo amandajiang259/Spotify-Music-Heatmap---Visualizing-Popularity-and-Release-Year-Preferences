@@ -1,4 +1,4 @@
-# Spotify-Music-Heatmap---Visualizing-Tempo-and-Key-Preferences
+# Spotify-Music-Heatmap---Visualizing-Popularity-and-Release-Date-Preferences
 
 # Spotify Playlists:
 <!-- List of spotify playlists: 
