@@ -1,11 +1,15 @@
+# Import relevant libraries
 import requests
 import time
 
+# Spotify API class used to handle requests for data from Spotify
 class SpotifyAPI:
+    # initialization of the SpotifyAPI class
     def __init__(self, client_id, client_secret):
         self.client_id = client_id
         self.client_secret = client_secret
         self.token = self.get_access_token()
+
 
     def get_access_token(self):
         """Authenticate with Spotify and get an access token."""
