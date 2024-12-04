@@ -1,4 +1,4 @@
-# Spotify Music Heatmap - Visualizing Popularity and Release Date Preferences
+# Spotify Music Heatmap - Visualizing Popularity and Release Year Preferences
 Welcome to our Spotify Music Heatmap generator! Please follow the instructions below to learn how to use our program:
 
 
