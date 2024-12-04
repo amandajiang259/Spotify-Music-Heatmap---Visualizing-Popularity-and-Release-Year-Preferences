@@ -1,7 +1,9 @@
+# Import relevant libraries
 import time
-import requests
+import requests # ver. 2.32.3
 from collections import deque
 
+# Class used to create SpotifyAPI objects that enable the gathering of data from Spotify
 class SpotifyAPI:
     def __init__(self, client_id, client_secret):
         self.client_id = client_id
