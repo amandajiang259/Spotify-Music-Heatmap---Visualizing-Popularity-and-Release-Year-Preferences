@@ -1,7 +1,7 @@
 # Import relevant libraries
 import time
-import numpy as np
-import matplotlib
+import numpy as np # ver. 2.1.3
+import matplotlib # ver. 3.9.3
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from minHeap import MinHeap
