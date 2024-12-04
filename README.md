@@ -17,10 +17,10 @@ How to Run Our Code:
 
 
 # Spotify Playlists:
-a) 10,000 tracks: https://open.spotify.com/playlist/0MVbO1PsLKkP9vJPsM8z53
-b) 10,000 tracks: https://open.spotify.com/playlist/1G8IpkZKobrIlXcVPoSIuf
-c) 9,985 tracks: https://open.spotify.com/playlist/32twOqGf8gIswTgzG3IKxP
-d) 9,999 tracks: https://open.spotify.com/playlist/04ZwFco4KsjgPlVMtzwfgS
+a) 10,000 tracks: https://open.spotify.com/playlist/0MVbO1PsLKkP9vJPsM8z53  
+b) 10,000 tracks: https://open.spotify.com/playlist/1G8IpkZKobrIlXcVPoSIuf  
+c) 9,985 tracks: https://open.spotify.com/playlist/32twOqGf8gIswTgzG3IKxP  
+d) 9,999 tracks: https://open.spotify.com/playlist/04ZwFco4KsjgPlVMtzwfgS  
 e) 10,000 tracks: https://open.spotify.com/playlist/5BAwfKMtJJkVUklZGSOjb2
 f) 9,992 tracks: https://open.spotify.com/playlist/6Dr3FoEKN9fEw5WcXXiYeC
 g) 9,997 tracks: https://open.spotify.com/playlist/5BYZ049z7f8ochBQHKsrfB
