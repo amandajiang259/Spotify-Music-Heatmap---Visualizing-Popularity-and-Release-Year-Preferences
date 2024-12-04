@@ -1,4 +1,6 @@
+# Class for heap datastructure (min heap)
 class MinHeap:
+    # Initializes heap variable to an empty array, and frequency_map to an empty dictionary
     def __init__(self):
         self.heap = []
         self.frequency_map = {}
@@ -21,12 +23,14 @@ class MinHeap:
         self._sift_down(0)
         return root
 
+    # Moves the element at the index provided to the top of the heap
     def _sift_up(self, index):
         parent = (index - 1) // 2
         if index > 0 and self.heap[index] < self.heap[parent]:
             self.heap[index], self.heap[parent] = self.heap[parent], self.heap[index]
             self._sift_up(parent)
 
+    # Moves the element at the index provided to the bottom of the heap
     def _sift_down(self, index):
         child1 = 2 * index + 1
         child2 = 2 * index + 2
@@ -40,6 +44,7 @@ class MinHeap:
         if smallest != index:
             self.heap[index], self.heap[smallest] = self.heap[smallest], self.heap[index]
             self._sift_down(smallest)
+
 
     def get_frequency(self):
         # Returns the frequency map with keys as 'year-popularity' strings for compatibility.
