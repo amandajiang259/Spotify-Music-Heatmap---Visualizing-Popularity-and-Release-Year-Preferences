@@ -55,8 +55,8 @@ def generate_heatmap(frequency_map, playlist_name, generation_time, structure_ch
 
 # Main function used to handle user input and function calls
 def main():
-    CLIENT_ID = "326fc1e53d714e2682aaaa5bf3b22b87"
-    CLIENT_SECRET = "b551096e20984b9b89575cbd34f06e40"
+    CLIENT_ID = "684b5f074fa14833a3e66e09442e81bd"
+    CLIENT_SECRET = "d156206f74ab4d20aac0b0b0e0ba2ebe"
     playlist_id = input("Enter the Spotify playlist ID: ").strip() # Prompts the user to input the ID of the playlist
     if not playlist_id: # If the user inputs an invalid (empty) playlist ID, then print an error
         print("Error: Playlist ID cannot be empty.")

@@ -79,6 +79,19 @@ class SpotifyAPI:
 
         return all_tracks
 
+    def get_playlist_name(self, playlist_id):
+        """Fetch the playlist name using the Spotify API."""
+        url = f"https://api.spotify.com/v1/playlists/{playlist_id}"
+        headers = {"Authorization": f"Bearer {self.token}"}
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 200:
+            playlist_data = response.json()
+            return playlist_data.get("name", "Unknown Playlist")
+        else:
+            print(f"Failed to retrieve playlist name: {response.status_code}")
+            return "Unknown Playlist"
+
     def get_artist_popularity(self, artist_id):
         """Fetch artist popularity."""
         url = f"https://api.spotify.com/v1/artists/{artist_id}"
@@ -113,6 +126,6 @@ class SpotifyAPI:
             if artist_popularity is not None:
                 data.append((release_date, artist_popularity))
                 count += 1
-                print(f"Total songs processed: {count}")
 
+        print(f"Total songs processed: {count}")
         return data
