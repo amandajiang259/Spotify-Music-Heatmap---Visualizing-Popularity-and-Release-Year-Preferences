@@ -12,30 +12,30 @@ from SpotifyAPI import SpotifyAPI
 def generate_heatmap(frequency_map, playlist_name, generation_time, structure_choice):
     print(frequency_map)
 
-    # Extract years and popularity values from the frequency map
-    x_values = sorted({int(key.split("-")[0]) for key in frequency_map.keys()})  # Extract years
-    y_values = sorted({int(key.split("-")[1]) for key in frequency_map.keys()})  # Extract unique popularity values from the map
+    # Define the full range of years and popularity values
+    x_values = list(range(1960, 2025))  # Years from 1960 to 2024
+    y_values = list(range(0, 101))  # Popularity from 0 to 100
 
-    # Create a 2D grid (heatmap matrix)
+    # Create a 2D grid (heatmap matrix) with zeros
     heatmap = np.zeros((len(y_values), len(x_values)))  # Rows = popularity, columns = years
 
     # Fill the heatmap with frequencies
     for key, count in frequency_map.items():
         year = int(key.split("-")[0])  # Extract year from the key
         popularity = int(key.split("-")[1])  # Extract popularity from the key
-        x_idx = x_values.index(year)  # Column index (year)
-        y_idx = y_values.index(popularity)  # Row index (popularity)
-        heatmap[y_idx, x_idx] = count  # Assign count to the grid cell
+        if 1960 <= year <= 2024 and 0 <= popularity <= 100:  # Ensure values are within range
+            x_idx = x_values.index(year)  # Column index (year)
+            y_idx = y_values.index(popularity)  # Row index (popularity)
+            heatmap[y_idx, x_idx] = count  # Assign count to the grid cell
 
     # Normalize the heatmap for coloring (percentage of total)
     total_count = heatmap.sum()
-    heatmap_normalized = heatmap / total_count
+    heatmap_normalized = heatmap / total_count if total_count > 0 else heatmap
 
     # Create the heatmap
     fig, ax = plt.subplots(figsize=(10, 6))
     img = ax.imshow(heatmap_normalized, cmap="viridis", aspect="auto",
-                    extent=[min(x_values), max(x_values), min(y_values), max(y_values)],
-                    origin='lower')
+                    extent=[1960, 2024, 0, 100], origin='lower')
 
     # Add titles and labels
     ax.set_title(f"Heatmap of Songs by Release Date and Artist Popularity\n"
