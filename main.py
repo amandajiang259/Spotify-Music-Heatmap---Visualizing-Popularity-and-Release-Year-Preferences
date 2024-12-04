@@ -1,22 +1,26 @@
-import tkinter as tk
+# Import relevant libraries
+import tkinter as tk # used for GUI
 from tkinter import ttk, messagebox
 import time
 import threading
-import matplotlib
+import matplotlib # ver. 3.9.3
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
-import numpy as np
+import numpy as np # ver. 2.1.3
 from minHeap import MinHeap
 from hashmap import HashMap
 from SpotifyAPI import SpotifyAPI
 
 
 def generate_heatmap(frequency_map, playlist_name, generation_time, structure_choice):
-    # Functionality same as your original function
+    # Functionality same as the original function
+
+    # Define the full range of years and popularity values
     x_values = list(range(1960, 2025))
     y_values = list(range(0, 101))
     heatmap = np.zeros((len(y_values), len(x_values)))
 
+    # Fill the heatmap with frequencies
     for key, count in frequency_map.items():
         year = int(key.split("-")[0])
         popularity = int(key.split("-")[1])
@@ -25,13 +29,16 @@ def generate_heatmap(frequency_map, playlist_name, generation_time, structure_ch
             y_idx = y_values.index(popularity)
             heatmap[y_idx, x_idx] = count
 
+    # Normalize the heatmap for coloring
     total_count = heatmap.sum()
     heatmap_normalized = heatmap / total_count if total_count > 0 else heatmap
 
+    # Create the heatmap
     fig, ax = plt.subplots(figsize=(10, 6))
     img = ax.imshow(heatmap_normalized, cmap="viridis", aspect="auto",
                     extent=[1960, 2024, 0, 100], origin='lower')
 
+    # Add titles and labels
     ax.set_title(f"Heatmap of Songs by Release Date and Artist Popularity\n"
                  f"Playlist: {playlist_name} | Structure: {structure_choice.capitalize()}",
                  fontsize=14)
@@ -49,19 +56,26 @@ def process_data(playlist_id, structure_choice, label_status):
 
     spotify = SpotifyAPI(CLIENT_ID, CLIENT_SECRET)
     label_status.config(text="Fetching data from Spotify...")
+
+    # Try to access the playlist informatiom
     try:
         data = spotify.parse_playlist_data(playlist_id)
         playlist_name = spotify.get_playlist_name(playlist_id)
+    # If unsuccessful print an error message and return
     except Exception as e:
         messagebox.showerror("Error", f"Spotify API error: {e}")
         label_status.config(text="Idle")
         return
 
+    # get the start time
     start_time = time.perf_counter()
+
+    # If the user chooses heap use the heap data structure
     if structure_choice == "heap":
         structure = MinHeap()
         for release_date, artist_popularity in data:
             structure.push(release_date, artist_popularity)
+    # if the user chooses hashmap use the hashmap datastructure
     elif structure_choice == "hashmap":
         structure = HashMap()
         for release_date, artist_popularity in data:
@@ -76,10 +90,12 @@ def process_data(playlist_id, structure_choice, label_status):
 
 def on_submit(entry_playlist_id, structure_choice, label_status):
     playlist_id = entry_playlist_id.get().strip()
+    # If the playlist ID entered is invalid print an error message
     if not playlist_id:
         messagebox.showerror("Error", "Playlist ID cannot be empty.")
         return
 
+    # If a neither the heap or hashmap structures are selected, print an error message and return
     if structure_choice.get() not in {"heap", "hashmap"}:
         messagebox.showerror("Error", "Invalid structure choice. Please select Heap or HashMap.")
         return
@@ -91,7 +107,11 @@ def on_submit(entry_playlist_id, structure_choice, label_status):
 # Main GUI setup
 def main_gui():
     root = tk.Tk()
+
+    # Title for the window
     root.title("Spotify Playlist Heatmap Generator")
+
+    # Size of the window
     root.geometry("400x300")
 
     # Playlist ID input
