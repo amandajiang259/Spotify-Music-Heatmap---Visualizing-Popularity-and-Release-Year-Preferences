@@ -53,8 +53,8 @@ def generate_heatmap(frequency_map, playlist_name, generation_time, structure_ch
     plt.show()
 
 def main():
-    CLIENT_ID = "326fc1e53d714e2682aaaa5bf3b22b87"
-    CLIENT_SECRET = "b551096e20984b9b89575cbd34f06e40"
+    CLIENT_ID = "3d5dc01098e04aa6acec25bea7596cc8"
+    CLIENT_SECRET = "4d237a2e0b074cc89b3384a6435060e8"
     playlist_id = input("Enter the Spotify playlist ID: ").strip()
     if not playlist_id:
         print("Error: Playlist ID cannot be empty.")
@@ -69,7 +69,6 @@ def main():
 
     try:
         print("Fetching data from Spotify...")
-        start_time = time.time()
 
         data = spotify.parse_playlist_data(playlist_id)
         playlist_name = spotify.get_playlist_name(playlist_id)
@@ -77,6 +76,7 @@ def main():
         print(f"Error: {e}")
         return
 
+    start_time = time.time()
     if structure_choice == "heap":
         structure = MinHeap()
         for release_date, artist_popularity in data:
