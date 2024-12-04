@@ -4,18 +4,14 @@ class MinHeap:
         self.frequency_map = {}
 
     def push(self, release_date, artist_popularity):
-        """
-        Inserts a tuple (release_date, artist_popularity) into the heap and updates frequency map.
-        """
+        # Inserts a tuple (release_date, artist_popularity) into the heap and updates frequency map.
         item = (int(release_date.split("-")[0]), artist_popularity)  # Extract year for comparisons
         self.heap.append(item)
         self.frequency_map[item] = self.frequency_map.get(item, 0) + 1
         self._sift_up(len(self.heap) - 1)
 
     def pop(self):
-        """
-        Removes and returns the smallest item from the heap.
-        """
+        # Removes and returns the smallest item from the heap.
         if not self.heap:
             raise IndexError("Heap is empty")
         if len(self.heap) == 1:
@@ -46,15 +42,11 @@ class MinHeap:
             self._sift_down(smallest)
 
     def get_frequency(self):
-        """
-        Returns the frequency map with keys as 'year-popularity' strings for compatibility.
-        """
+        # Returns the frequency map with keys as 'year-popularity' strings for compatibility.
         return {f"{key[0]}-{key[1]}": count for key, count in self.frequency_map.items()}
 
     def is_empty(self):
-        """
-        Returns True if the heap is empty, False otherwise.
-        """
+        # Returns True if the heap is empty, False otherwise.
         return len(self.heap) == 0
 
     def __str__(self):
